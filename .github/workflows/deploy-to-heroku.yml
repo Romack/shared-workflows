@@ -21,4 +21,4 @@ jobs:
         run: echo "Test Secret ${{ secrets.TEST_SECRET }}"
 
       - name: Echo Non-Existant Secret
-        run: echo "Test Secret ${{ secrets.BAD_SECRET }}"
+        run: echo "Non-Existant Secret ${{ secrets.BAD_SECRET }}"
