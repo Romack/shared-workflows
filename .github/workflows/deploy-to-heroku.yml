@@ -6,7 +6,6 @@ on:
       application_name:
         required: true
         type: string
-    secrets: inherit
 
 jobs:
   deploy_to_heroku:
