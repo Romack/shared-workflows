@@ -22,6 +22,15 @@ jobs:
           echo "Override Application Name ${herokuApplicationNameOverride}"
           echo "Heroku Application Name ${herokuApplicationName}"
 
+      - name: Get Heroku App Name Action 
+        uses: ./
+        id: get-heroku-application-name
+        with: 
+          environment: ${{ inputs.environment }}
+
+      - name: Get the output
+        run: echo "App was ${{ steps.get-heroku-application-name.outputs.heroku_application_name }}"
+
       - name: Echo Environment
         run: echo "Environment ${{ inputs.environment }}"
 
