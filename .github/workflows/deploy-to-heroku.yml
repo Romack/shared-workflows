@@ -23,7 +23,7 @@ jobs:
           echo "Heroku Application Name ${herokuApplicationName}"
 
       - name: Get Heroku App Name Action 
-        uses: ./
+        uses: ./.github/actions/get-heroku-application-name
         id: get-heroku-application-name
         with: 
           environment: ${{ inputs.environment }}
