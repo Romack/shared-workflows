@@ -24,7 +24,7 @@ jobs:
 
       - name: Get Heroku App Name Action 
         id: get-heroku-application-name
-        uses: Romack/shared-workflows/.github/actions/get-heroku-application-name
+        uses: romack/shared-workflows/get-heroku-application-name@main
         with: 
           environment: ${{ inputs.environment }}
 
