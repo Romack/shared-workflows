@@ -22,11 +22,11 @@ jobs:
           echo "Override Application Name ${herokuApplicationNameOverride}"
           echo "Heroku Application Name ${herokuApplicationName}"
 
-      - name: Get Heroku App Name Action 
-        id: get-heroku-application-name
-        uses: romack/shared-workflows/get-heroku-application-name@main
-        with: 
-          environment: ${{ inputs.environment }}
+      # - name: Get Heroku App Name Action 
+        # id: get-heroku-application-name
+        # uses: romack/shared-workflows/get-heroku-application-name@main
+        # with: 
+          # environment: ${{ inputs.environment }}
 
       - name: Get the output
         run: echo "App was ${{ steps.get-heroku-application-name.outputs.heroku_application_name }}"
