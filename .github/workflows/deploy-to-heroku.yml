@@ -12,6 +12,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: YQ exists
+        run: yq --help
+
       - name: Echo Application Name
         run: echo "Application Name ${{ inputs.application_name }}"
 
