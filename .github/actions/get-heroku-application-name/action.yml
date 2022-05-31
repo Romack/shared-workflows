@@ -1,5 +1,12 @@
-name: 'Validate Pivotal ID'
-description: 'Validates the pivotal id on the pull request title'
+name: 'Get the Heroku Application Name'
+description: 'Get the Heroku Application Name'
+inputs:
+  environment:
+    description: 'The target deployment environment '
+    required: true
+outputs:
+  heroku_application_name:
+    description: 'The name of the application in Heroku for the given environment'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'index.js'

@@ -1,41 +1,29 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const Pivotal = require('pivotaljs');
 
-const PIVOTAL_STORY_ID_REGEX = new RegExp(/\[#[0-9]+\]/);
-
-const extractPivotalStoryId = message => {
-  if (PIVOTAL_STORY_ID_REGEX.test(message)) {
-    var matchedStoryId = message.match(PIVOTAL_STORY_ID_REGEX)[0];
-    var strippedStoryId = matchedStoryId
-        .replace(']', '')
-        .replace('[', '')
-        .replace('#', '');
-    return strippedStoryId;
-  }
-};
+/*
+ applicationName=$(echo ${{ github.repository }} | sed "s|${{ github.repository_owner }}/||g")
+defaultHerokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
+herokuApplicationNameOverride=$(cat .repo-metadata.yaml| yq '.deployment["heroku-application-name"]'.${{ inputs.environment }} | sed s/\"//g 2>/dev/null)
+herokuApplicationName=${herokuApplicationNameOverride:=$defaultHerokuApplicationName}
+echo "Default Application Name ${defaultHerokuApplicationName}"
+echo "Override Application Name ${herokuApplicationNameOverride}"
+echo "Heroku Application Name ${herokuApplicationName}"
+*/
 
 try {
-  const title = github.context.payload.pull_request.title;
-  console.log(`Pull Request Title: ${title}`);
+  const environment = core.getInput('environment');
+console.log(`Environment: ${environment}`);
+  const repository = github.repository;
+console.log(`Repository: ${repository}`);
+  const repositoryOwner = github.repository_owner;
+console.log(`Repository Owner: ${repositoryOwner}`);
 
-  const pivotalStoryId = extractPivotalStoryId(title);
-
-  if (pivotalStoryId) {
-    console.log(`Validating ${pivotalStoryId}`);
-    let pivotal = new Pivotal(process.env.PIVOTAL_API_TOKEN);
-
-    pivotal.getStory(pivotalStoryId, function(err, story) {
-      if (story.kind === 'story') {
-        console.log(`Story: ${JSON.stringify(story)}`);
-      } else {
-        core.setFailed("Invalid story id");
-      }
-    });
-
-  } else {
-    core.setFailed("Pull request title should include the pivotal story id");
-  }
+  const applicationName = github.repository.replace(github.repository_owner, '');
+console.log(`Application Name: ${applicationName}`);
+  // const defaultHerokuApplicationName =
+  // const herokuApplicationNameOverride =
+  core.setOutput("heroku_application_name", "feenix-dev");
 
 } catch (error) {
   core.setFailed(error.message);
