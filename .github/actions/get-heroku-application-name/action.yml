@@ -4,6 +4,7 @@ inputs:
   environment:
     description: 'The target deployment environment '
     required: true
+    default: 'dev'
 outputs:
   heroku_application_name:
     description: 'The name of the application in Heroku for the given environment'
