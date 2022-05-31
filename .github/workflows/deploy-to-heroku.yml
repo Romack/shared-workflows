@@ -14,11 +14,14 @@ jobs:
 
       - name: Get Heroku Application Name
         run: |
-          override=$(cat .repo-metadata.yaml| yq .'deployment["heroku-application-name"].dev' | sed s/\"//g)
+          herokuApplicationName=$(cat .repo-metadata.yaml| yq .'deployment["heroku-application-name"].${{ inputs.environment }}' | sed s/\"//g 2>/dev/null)
           echo "Override: ${override}"
 
       - name: Echo Application Name
         run: echo "Application Name ${{ inputs.application_name }}"
+
+      - name: Echo Repository
+        run: echo ${{ github.repository }}
 
       - name: Echo Inherited Secret
         run: echo "Test Secret ${{ secrets.TEST_SECRET }}"
