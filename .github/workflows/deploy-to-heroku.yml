@@ -1,7 +1,7 @@
 on:
   workflow_call:
     inputs:
-      application_name:
+      environment:
         required: true
         type: string
 
@@ -14,14 +14,19 @@ jobs:
 
       - name: Get Heroku Application Name
         run: |
-          herokuApplicationName=$(cat .repo-metadata.yaml| yq .'deployment["heroku-application-name"].${{ inputs.environment }}' | sed s/\"//g 2>/dev/null)
-          echo "Override: ${override}"
+          defaultApplicationName=`echo ${{ github.repository }} | sed s/${{ github.repository_owner }}//g`
+          herokuApplicationName=$(cat .repo-metadata.yaml| yq '.deployment["heroku-application-name"]'.${{ inputs.environment }} | sed s/\"//g 2>/dev/null)
+          echo "Default Application Name ${defaultApplicationName}"
+          echo "Application Name ${herokuApplicationName}"
 
-      - name: Echo Application Name
-        run: echo "Application Name ${{ inputs.application_name }}"
+      - name: Echo Environment
+        run: echo "Environment ${{ inputs.environment }}"
 
       - name: Echo Repository
-        run: echo ${{ github.repository }}
+        run: echo "Repository ${{ github.repository }}"
+
+      - name: Echo Repository Owner
+        run: echo "Reopsitory Owner ${{ github.repository_owner }}"
 
       - name: Echo Inherited Secret
         run: echo "Test Secret ${{ secrets.TEST_SECRET }}"
