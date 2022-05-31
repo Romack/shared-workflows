@@ -1,0 +1,5 @@
+name: 'Validate Pivotal ID'
+description: 'Validates the pivotal id on the pull request title'
+runs:
+  using: 'node12'
+  main: 'index.js'
