@@ -14,7 +14,7 @@ jobs:
 
       - name: Script Test
         run: |
-          testVar=$(bash ./getHerokuApplicationName.sh)
+          testVar=$(bash ./.github/workflows/getHerokuApplicationName.sh)
           echo "Test Var $testVar"
 
         # TODO: pull this out to a custom action
