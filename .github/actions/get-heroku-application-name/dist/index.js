@@ -17157,7 +17157,9 @@ const yaml = __nccwpck_require__(5065);
 
 const getHerokuApplicationName = (environment) => {
   const applicationName = github.context.payload.repository.name;
+  const defaultHerokuApplicationName = `invh-${applicationName}-${environment}`;
   console.log(`Application Name: ${applicationName}`);
+  console.log(`Default Heroku Application Name: ${defaultHerokuApplicationName}`);
 
   const metadata = fs.readFileSync("./.repo-metadata.yaml", "utf-8");
   // console.log(`Metadata: ${metadata}`);
