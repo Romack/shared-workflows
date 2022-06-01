@@ -1,6 +1,7 @@
-const fs = require('fs');
 const core = require('@actions/core');
 const github = require('@actions/github');
+const fs = require('fs');
+const yaml = require('yaml');
 
 const getHerokuApplicationName = (environment) => {
   const applicationName = github.context.payload.repository.name;
@@ -8,6 +9,9 @@ const getHerokuApplicationName = (environment) => {
 
   const metadata = fs.readFileSync("./.repo-metadata.yaml", "utf-8");
   console.log(`Metadata: ${metadata}`);
+
+  const parsed = yaml.parse(metadata);
+  console.log(`Metadata: ${JSON.stringify(parsed)}`);
   return "feenix-dev";
 }
 
