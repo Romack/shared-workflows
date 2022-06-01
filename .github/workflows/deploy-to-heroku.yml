@@ -12,36 +12,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Script Test
-        run: |
-          testVar=$(bash ${GITHUB_WORKSPACE}/.github/workflows/getHerokuApplicationName.sh)
-          echo "Test Var $testVar"
-
-        # TODO: pull this out to a custom action
-      - name: Set Heroku Application Name
-        id: set-heroku-application-name
-        run: |
-          herokuApplicationName=$(cat .repo-metadata.yaml | yq '.deployment."heroku-application-name"'.${{ inputs.environment }} | sed "s|\"||g" | sed "s|null||g")
-          if [ -z "${herokuApplicationName}" ]; then
-            applicationName=$(echo ${{ github.repository }} | sed "s|${{ github.repository_owner }}/||g")
-            herokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
-          fi
-          echo "::set-output name=heroku_application_name::${herokuApplicationName}"
-
-      - name: Output Heroku Application Name
-        run: echo "App was ${{ steps.set-heroku-application-name.outputs.heroku_application_name }}"
-
-      - name: Echo Environment
-        run: echo "Environment ${{ inputs.environment }}"
-
-      - name: Echo Repository
-        run: echo "Repository ${{ github.repository }}"
-
-      - name: Echo Repository Owner
-        run: echo "Reopsitory Owner ${{ github.repository_owner }}"
-
-      - name: Echo Inherited Secret
-        run: echo "Test Secret ${{ secrets.TEST_SECRET }}"
-
-      - name: Echo Non-Existant Secret
-        run: echo "Non-Existant Secret ${{ secrets.BAD_SECRET }}"
+       - name: Get Heroku App Name Action
+         id: get-heroku-application-name
+         uses: Romack/shared-workflows/get-heroku-application-name@main
+         with:
+           environment: ${{ inputs.environment }}
