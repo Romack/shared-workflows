@@ -11,7 +11,8 @@ const getHerokuApplicationName = (environment) => {
   console.log(`Metadata: ${metadata}`);
 
   const parsed = yaml.parse(metadata);
-  console.log(`Yaml: ${JSON.stringify(parsed["deployment"]["heroku-application-name"][environment])}`);
+  const herokuApplicationName = parsed["deployment"]["heroku-application-name"][environment]);
+  console.log(`Heroku Application Name: ${herokuApplicationName}`);
   return "feenix-dev";
 }
 
