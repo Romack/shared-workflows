@@ -30,7 +30,7 @@ const getHerokuApplicationName = (environment) => {
       return herokuApplicationNameOverride;
     }
   } else {
-    console.warning(".repo-metadata file missing for repository");
+    console.warn(".repo-metadata file missing for repository");
   }
 
   return defaultHerokuApplicationName;
