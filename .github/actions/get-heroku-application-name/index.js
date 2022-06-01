@@ -8,11 +8,12 @@ const getHerokuApplicationName = (environment) => {
   console.log(`Application Name: ${applicationName}`);
 
   const metadata = fs.readFileSync("./.repo-metadata.yaml", "utf-8");
-  console.log(`Metadata: ${metadata}`);
+  // console.log(`Metadata: ${metadata}`);
 
   const parsed = yaml.parse(metadata);
-  const herokuApplicationName = parsed["deployment"]["heroku-application-name"][environment]);
-  console.log(`Heroku Application Name: ${herokuApplicationName}`);
+  const herokuApplicationName = parsed["deployment"]["heroku-application-name"][environment];
+  console.log(`Heroku Application Name Override: ${herokuApplicationName}`);
+
   return "feenix-dev";
 }
 
