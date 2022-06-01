@@ -8858,6 +8858,7 @@ module.exports = require("zlib");;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
+const fs = __nccwpck_require__(5747);
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 
@@ -8873,21 +8874,24 @@ echo "Heroku Application Name ${herokuApplicationName}"
 
 try {
   const environment = core.getInput('environment');
+  console.log(`Environment: ${environment}`);
   console.log(`GitHub Context: ${JSON.stringify(github.context.payload)}`);
-console.log(`Environment: ${environment}`);
-  const repository = github.context.payload.repository.name;
-console.log(`Repository: ${repository}`);
-  const repositoryOwner = github.context.payload.repository.owner;
-console.log(`Repository Owner: ${repositoryOwner}`);
 
-  const applicationName = github.repository.replace(github.repository_owner, '');
-console.log(`Application Name: ${applicationName}`);
+  // This makes the assumption that the repository name is the same as the application name
+  const applicationName = github.context.payload.repository.name;
+  console.log(`Application Name: ${applicationName}`);
+  console.log(`Heroku Application Name: ${getHerokuApplicationName()}`);
+
   // const defaultHerokuApplicationName =
   // const herokuApplicationNameOverride =
   core.setOutput("heroku_application_name", "feenix-dev");
 
 } catch (error) {
   core.setFailed(error.message);
+}
+
+const getHerokuApplicationName = () => {
+  return "feenix-dev";
 }
 
 })();

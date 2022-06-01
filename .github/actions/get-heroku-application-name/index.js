@@ -1,3 +1,4 @@
+const fs = require('fs');
 const core = require('@actions/core');
 const github = require('@actions/github');
 
@@ -13,19 +14,22 @@ echo "Heroku Application Name ${herokuApplicationName}"
 
 try {
   const environment = core.getInput('environment');
+  console.log(`Environment: ${environment}`);
   console.log(`GitHub Context: ${JSON.stringify(github.context.payload)}`);
-console.log(`Environment: ${environment}`);
-  const repository = github.context.payload.repository.name;
-console.log(`Repository: ${repository}`);
-  const repositoryOwner = github.context.payload.repository.owner;
-console.log(`Repository Owner: ${repositoryOwner}`);
 
-  const applicationName = github.repository.replace(github.repository_owner, '');
-console.log(`Application Name: ${applicationName}`);
+  // This makes the assumption that the repository name is the same as the application name
+  const applicationName = github.context.payload.repository.name;
+  console.log(`Application Name: ${applicationName}`);
+  console.log(`Heroku Application Name: ${getHerokuApplicationName()}`);
+
   // const defaultHerokuApplicationName =
   // const herokuApplicationNameOverride =
   core.setOutput("heroku_application_name", "feenix-dev");
 
 } catch (error) {
   core.setFailed(error.message);
+}
+
+const getHerokuApplicationName = () => {
+  return "feenix-dev";
 }
