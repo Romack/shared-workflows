@@ -17158,8 +17158,8 @@ const yaml = __nccwpck_require__(5065);
 const getHerokuApplicationName = (environment) => {
   const applicationName = github.context.payload.repository.name;
   const defaultHerokuApplicationName = `invh-${applicationName}-${environment}`;
-  
-  const metadata = fs.readFileSync("./.repo-metadata.yaml", "utf-8");
+
+  const metadata = fs.readFileSync("./.repo-metadata-bad.yaml", "utf-8");
   const parsed = yaml.parse(metadata);
   const herokuApplicationNameOverride = parsed["deployment"]["heroku-application-name"][environment];
 
