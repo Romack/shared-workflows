@@ -21,7 +21,7 @@ jobs:
           echo "1) Heroku Application Name ${herokuApplicationName}"
           if [ -z "${herokuApplicationName}" ]; then
             echo "NULL STRING"
-            $herokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
+            herokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
           fi
           echo "2) Heroku Application Name ${herokuApplicationName}"
           echo "::set-output name=heroku_application_name::${herokuApplicationName}"
