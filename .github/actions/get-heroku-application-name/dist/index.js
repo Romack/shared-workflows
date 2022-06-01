@@ -17193,7 +17193,6 @@ try {
   console.log(`Heroku Application Name: ${herokuApplicationName}`);
 
   core.setOutput("heroku_application_name", "feenix-dev");
-
 } catch (error) {
   core.setFailed(error.message);
 }
