@@ -19,7 +19,7 @@ jobs:
           echo "Application Name ${applicationName}"
           herokuApplicationName=$(cat .repo-metadata.yaml | yq '.deployment."heroku-application-name"'.${{ inputs.environment }} | sed "s|\"||g" 2>/dev/null)
           echo "Heroku Application Name ${herokuApplicationName}"
-          if [[ ! "${herokuApplicationName}" ]]; then
+          if [[ ! "$myTest" ]]; then
               echo "Heroku application name is null"
               herokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
           fi
