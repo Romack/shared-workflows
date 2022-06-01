@@ -15,7 +15,7 @@ try {
   const environment = core.getInput('environment');
 console.log(`Environment: ${environment}`);
   const repository = github.context.repository;
-console.log(`Repository: ${repository}`);
+console.log(`GitHub Context: ${JSON.stringify(github)}`);
   const repositoryOwner = github.context.repository_owner;
 console.log(`Repository Owner: ${repositoryOwner}`);
 
