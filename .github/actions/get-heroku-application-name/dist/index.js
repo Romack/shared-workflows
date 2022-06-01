@@ -17163,7 +17163,7 @@ const getHerokuApplicationName = (environment) => {
   console.log(`Metadata: ${metadata}`);
 
   const parsed = yaml.parse(metadata);
-  console.log(`Metadata: ${JSON.stringify(parsed)}`);
+  console.log(`Yaml: ${JSON.stringify(parsed.deployment.heroku-application-name)}`);
   return "feenix-dev";
 }
 
