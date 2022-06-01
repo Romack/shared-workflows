@@ -17,13 +17,12 @@ jobs:
         run: |
           applicationName=$(echo ${{ github.repository }} | sed "s|${{ github.repository_owner }}/||g")
           herokuApplicationName=$(cat .repo-metadata.yaml | yq '.deployment."heroku-application-name"'.${{ inputs.environment }} | sed "s|\"||g" | sed "s|null||g")
+          echo "1) Heroku Application Name ${herokuApplicationName}"
           if [ -z "${herokuApplicationName}" ]; then
             echo "NULL STRING"
             $herokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
           fi
-          echo "Default Application Name ${defaultHerokuApplicationName}"
-          echo "Override Application Name ${herokuApplicationNameOverride}"
-          echo "Heroku Application Name ${herokuApplicationName}"
+          echo "2) Heroku Application Name ${herokuApplicationName}"
 
       - name: Get the output
         run: echo "App was ${{ steps.get-heroku-application-name.outputs.heroku_application_name }}"
