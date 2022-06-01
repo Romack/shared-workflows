@@ -8872,22 +8872,26 @@ echo "Override Application Name ${herokuApplicationNameOverride}"
 echo "Heroku Application Name ${herokuApplicationName}"
 */
 
-try {
-  const environment = core.getInput('environment');
-  console.log(`Environment: ${environment}`);
-  console.log(`GitHub Context: ${JSON.stringify(github.context.payload)}`);
+main();
 
-  // This makes the assumption that the repository name is the same as the application name
-  const applicationName = github.context.payload.repository.name;
-  console.log(`Application Name: ${applicationName}`);
-  console.log(`Heroku Application Name: ${getHerokuApplicationName()}`);
+const main = () => {
+  try {
+    const environment = core.getInput('environment');
+    console.log(`Environment: ${environment}`);
+    console.log(`GitHub Context: ${JSON.stringify(github.context.payload)}`);
 
-  // const defaultHerokuApplicationName =
-  // const herokuApplicationNameOverride =
-  core.setOutput("heroku_application_name", "feenix-dev");
+    // This makes the assumption that the repository name is the same as the application name
+    const applicationName = github.context.payload.repository.name;
+    console.log(`Application Name: ${applicationName}`);
+    console.log(`Heroku Application Name: ${getHerokuApplicationName()}`);
 
-} catch (error) {
-  core.setFailed(error.message);
+    // const defaultHerokuApplicationName =
+    // const herokuApplicationNameOverride =
+    core.setOutput("heroku_application_name", "feenix-dev");
+
+  } catch (error) {
+    core.setFailed(error.message);
+  }
 }
 
 const getHerokuApplicationName = () => {
