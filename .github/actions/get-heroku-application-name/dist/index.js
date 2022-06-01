@@ -17155,31 +17155,43 @@ const github = __nccwpck_require__(5438);
 const fs = __nccwpck_require__(5747);
 const yaml = __nccwpck_require__(5065);
 
+const REPOSITORY_METADATA_FILE = "./.repo-metadata-bad.yaml";
+
+/**
+ * Returns the Heroku Application Name for the given environment
+ *
+ * This function will check the repository metadata file to see if a name override
+ * has been configured for the specified environment.
+ *
+ * If so, it will return that value.  Otherwise, return the standard heroku application
+ * name "invh-<application_name>-<environment>"
+ */
 const getHerokuApplicationName = (environment) => {
   const applicationName = github.context.payload.repository.name;
   const defaultHerokuApplicationName = `invh-${applicationName}-${environment}`;
-
-  const metadata = fs.readFileSync("./.repo-metadata-bad.yaml", "utf-8");
-  const parsed = yaml.parse(metadata);
-  const herokuApplicationNameOverride = parsed["deployment"]["heroku-application-name"][environment];
-
   console.log(`Application Name: ${applicationName}`);
   console.log(`Default Heroku Application Name: ${defaultHerokuApplicationName}`);
-  console.log(`Heroku Application Name Override: ${herokuApplicationNameOverride}`);
 
-  return herokuApplicationNameOverride
-    ? herokuApplicationNameOverride
-    : defaultHerokuApplicationName;
+  if (fs.existsSync(REPOSITORY_METADATA_FILE)) {
+    const metadata = fs.readFileSync(REPOSITORY_METADATA_FILE, "utf-8");
+    const parsed = yaml.parse(metadata);
+    const herokuApplicationNameOverride = parsed["deployment"]["heroku-application-name"][environment];
+    console.log(`Heroku Application Name Override: ${herokuApplicationNameOverride}`);
+
+    if (herokuApplicationNameOverride) {
+      return herokuApplicationNameOverride;
+    }
+  }
+
+  return defaultHerokuApplicationName;
 }
 
 try {
   const environment = core.getInput('environment');
-  console.log(`Environment: ${environment}`);
-
   const herokuApplicationName = getHerokuApplicationName(environment);
+  console.log(`Environment: ${environment}`);
   console.log(`Heroku Application Name: ${herokuApplicationName}`);
 
-  // cat .repo-metadata.yaml| yq '.deployment["heroku-application-name"]'.${{ inputs.environment }} | sed s/\"//g 2>/dev/null
   core.setOutput("heroku_application_name", "feenix-dev");
 
 } catch (error) {
