@@ -16,13 +16,11 @@ jobs:
       - name: Get Heroku Application Name
         run: |
           applicationName=$(echo ${{ github.repository }} | sed "s|${{ github.repository_owner }}/||g")
-          echo "Application Name ${applicationName}"
-          herokuApplicationName=$(cat .repo-metadata.yaml | yq '.deployment."heroku-application-name"'.${{ inputs.environment }} | sed "s|\"||g" 2>/dev/null)
-          echo "Heroku Application Name ${herokuApplicationName}"
-          if [[ ! "$myTest" ]]; then
-              echo "Heroku application name is null"
-              herokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
-          fi
+          defaultHerokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
+          herokuApplicationNameOverride=$(cat .repo-metadata.yaml | yq '.deployment."heroku-application-name"'.${{ inputs.environment }} | sed "s|\"||g" 2>/dev/null)
+          herokuApplicationName=${herokuApplicationNameOverride:-$defaultHerokuApplicationName}
+          echo "Default Application Name ${defaultHerokuApplicationName}"
+          echo "Override Application Name ${herokuApplicationNameOverride}"
           echo "Heroku Application Name ${herokuApplicationName}"
 
       - name: Get the output
