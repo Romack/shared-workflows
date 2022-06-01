@@ -8873,10 +8873,11 @@ echo "Heroku Application Name ${herokuApplicationName}"
 
 try {
   const environment = core.getInput('environment');
+  console.log(`GitHub Context: ${JSON.stringify(github.context.payload)}`);
 console.log(`Environment: ${environment}`);
-  const repository = github.context.repository;
-console.log(`GitHub Context: ${JSON.stringify(github)}`);
-  const repositoryOwner = github.context.repository_owner;
+  const repository = github.context.payload.repository.name;
+console.log(`Repository: ${repository}`);
+  const repositoryOwner = github.context.payload.repository.owner;
 console.log(`Repository Owner: ${repositoryOwner}`);
 
   const applicationName = github.repository.replace(github.repository_owner, '');
