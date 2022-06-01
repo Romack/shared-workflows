@@ -13,7 +13,8 @@ jobs:
         uses: actions/checkout@v2
 
         # TODO: pull this out to a custom action
-      - name: Get Heroku Application Name
+      - name: Set Heroku Application Name
+        id: set-heroku-application-name
         run: |
           applicationName=$(echo ${{ github.repository }} | sed "s|${{ github.repository_owner }}/||g")
           herokuApplicationName=$(cat .repo-metadata.yaml | yq '.deployment."heroku-application-name"'.${{ inputs.environment }} | sed "s|\"||g" | sed "s|null||g")
@@ -23,9 +24,10 @@ jobs:
             $herokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
           fi
           echo "2) Heroku Application Name ${herokuApplicationName}"
+          echo "::set-output name=heroku_application_name::${herokuApplicationName}"
 
-      - name: Get the output
-        run: echo "App was ${{ steps.get-heroku-application-name.outputs.heroku_application_name }}"
+      - name: Output Heroku Application Name
+        run: echo "App was ${{ steps.set-heroku-application-name.outputs.heroku_application_name }}"
 
       - name: Echo Environment
         run: echo "Environment ${{ inputs.environment }}"
