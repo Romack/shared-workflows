@@ -6,17 +6,18 @@ const yaml = require('yaml');
 const getHerokuApplicationName = (environment) => {
   const applicationName = github.context.payload.repository.name;
   const defaultHerokuApplicationName = `invh-${applicationName}-${environment}`;
+  
+  const metadata = fs.readFileSync("./.repo-metadata.yaml", "utf-8");
+  const parsed = yaml.parse(metadata);
+  const herokuApplicationNameOverride = parsed["deployment"]["heroku-application-name"][environment];
+
   console.log(`Application Name: ${applicationName}`);
   console.log(`Default Heroku Application Name: ${defaultHerokuApplicationName}`);
+  console.log(`Heroku Application Name Override: ${herokuApplicationNameOverride}`);
 
-  const metadata = fs.readFileSync("./.repo-metadata.yaml", "utf-8");
-  // console.log(`Metadata: ${metadata}`);
-
-  const parsed = yaml.parse(metadata);
-  const herokuApplicationName = parsed["deployment"]["heroku-application-name"][environment];
-  console.log(`Heroku Application Name Override: ${herokuApplicationName}`);
-
-  return "feenix-dev";
+  return herokuApplicationNameOverride
+    ? herokuApplicationNameOverride
+    : defaultHerokuApplicationName;
 }
 
 try {
