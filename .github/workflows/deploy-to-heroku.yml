@@ -18,5 +18,5 @@ jobs:
         with:
           environment: ${{ inputs.environment }}
 
-      - name: Get Heroku Application Name
-        run: echo "Heroku Application Name ${{ steps.get-heroku-application-name.outputs.heroku_application_name }}
+      - name: Echo Heroku Application Name
+        run: echo "Heroku Application Name ${{ steps.get-heroku-application-name.outputs.heroku_application_name }}"
