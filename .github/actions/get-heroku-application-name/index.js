@@ -22,6 +22,9 @@ try {
   console.log(`Environment: ${environment}`);
   console.log(`GitHub Context: ${JSON.stringify(github.context.payload)}`);
 
+  const metadata = fs.readFileSync("./.repo-metadata", "utf-8");
+  console.log(`Metadata: ${metadata}`);
+
   // This makes the assumption that the repository name is the same as the application name
   const applicationName = github.context.payload.repository.name;
   console.log(`Application Name: ${applicationName}`);
