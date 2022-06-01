@@ -16,10 +16,12 @@ jobs:
       - name: Get Heroku Application Name
         run: |
           applicationName=$(echo ${{ github.repository }} | sed "s|${{ github.repository_owner }}/||g")
+          echo "Application Name ${applicationName}"
           herokuApplicationName=$(cat .repo-metadata.yaml | yq '.deployment."heroku-application-name"'.${{ inputs.environment }} | sed "s|\"||g" 2>/dev/null)
           if [ -z "${herokuApplicationName}" ]
           then
-               herokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
+              echo "Heroku application name is null"
+              herokuApplicationName="invh-${applicationName}-${{ inputs.environment }}"
           fi
           echo "Heroku Application Name ${herokuApplicationName}"
 
