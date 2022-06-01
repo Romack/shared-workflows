@@ -12,8 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Get Heroku App Name Action
+      - name: Get Heroku Application Name
         id: get-heroku-application-name
         uses: romack/shared-workflows/.github/actions/get-heroku-application-name@main
         with:
           environment: ${{ inputs.environment }}
+
+      - name: Get Heroku Application Name
+        run: echo "Heroku Application Name ${{ steps.get-heroku-application-name.outputs.heroku_application_name }}
