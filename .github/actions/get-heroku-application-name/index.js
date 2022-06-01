@@ -14,7 +14,7 @@ echo "Heroku Application Name ${herokuApplicationName}"
 try {
   const environment = core.getInput('environment');
 console.log(`Environment: ${environment}`);
-  const repository = github.repository;
+  const repository = github.event.repository.name;
 console.log(`Repository: ${repository}`);
   const repositoryOwner = github.repository_owner;
 console.log(`Repository Owner: ${repositoryOwner}`);
