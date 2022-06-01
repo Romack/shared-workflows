@@ -12,6 +12,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Set Heroku Application Name
+        id: set-heroku-application-name
+        run: |
+          testVar=$(bash ./getHerokuApplicationName.sh)
+          echo "Test Var $testVar"
+
         # TODO: pull this out to a custom action
       - name: Set Heroku Application Name
         id: set-heroku-application-name
