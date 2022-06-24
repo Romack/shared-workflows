@@ -8927,6 +8927,9 @@ try {
   const packageJson = fs.readFileSync("./package.json", "utf-8");
   const parsed = JSON.parse(packageJson);
   console.log(`Version: ${parsed.version}`);
+  console.log(`GitHub Context: ${JSON.stringify(github.context)}`);
+
+  // const applicationName = github.context.payload.repository.name;
 
   // const octoKit = github.getOctokit(GITHUB_TOKEN);
   // const environment = core.getInput('environment');
