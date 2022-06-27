@@ -1,5 +1,5 @@
 {
-  "name": "create-github-tag",
+  "name": "create-commit-tag",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
