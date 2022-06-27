@@ -8930,6 +8930,18 @@ const run = async () => {
   const shortSha = github.context.sha.substr(0, 7);
   const tagName = `${parsed.version}-${shortSha}`;
 
+  const existing1 = await octokit.rest.git.getTag({
+    ...github.context.repo,
+    tag_sha: tagName
+  });
+  console.log(`Existing 1: ${JSON.stringify(existing1)}`);
+
+  const existing2 = await octokit.rest.git.getRef({
+    ...github.context.repo,
+    ref: tagName
+  });
+  console.log(`Existing 2: ${JSON.stringify(existing2)}`);
+
   core.info(`Creating tag: ${tagName}, commit: ${github.context.sha}`);
   const annotatedTag = await octokit.rest.git.createTag({
     ...github.context.repo,
