@@ -22,23 +22,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: YQ exists
-        run: yq --help
+      - name: Create a Release Tag
+        id: create-commit-tag
+        uses: romack/shared-workflows/.github/actions/create-commit-tag@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to Dev
-        # uses: akhileshns/heroku-deploy@v3.12.12
-        if: ${{ env.AUTO_DEPLOY_TO_DEV == 'true' }}
         run: echo "Deploying to ${{ inputs.dev_application_name }}"
-        # with:
-          # heroku_app_name: ${{ inputs.dev_application_name }}
-          # heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          # heroku_email: ${{ secrets.HEROKU_EMAIL }}
-
-      - name: Deploy to QA
-        # uses: akhileshns/heroku-deploy@v3.12.12
-        if: ${{ env.AUTO_DEPLOY_TO_QA == 'true' }}
-        run: echo "Deploying to ${{ inputs.qa_application_name }}"
-        # with:
-          # heroku_app_name: ${{ inputs.qa_application_name }} 
-          # heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          # heroku_email: ${{ secrets.HEROKU_EMAIL }}
