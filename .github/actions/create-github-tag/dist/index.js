@@ -8921,27 +8921,39 @@ const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 const fs = __nccwpck_require__(5747);
 
-try {
-  const packageJson = fs.readFileSync("./package.json", "utf-8");
-  const parsed = JSON.parse(packageJson);
-  const shortSha = github.context.sha.substr(0, 7);
-  const tagName = `${parsed.version}-${shortSha}`;
+const run = async () => {
+  try {
+    const githubToken = core.getInput('github-token');
+    const octokit = github.getOctokit(githubToken);
 
-  console.log(`Version: ${parsed.version}`);
-  console.log(`Sha: ${github.context.sha}`);
-  console.log(`Creating tag: ${tagName}`);
+    const packageJson = fs.readFileSync("./package.json", "utf-8");
+    const parsed = JSON.parse(packageJson);
+    const shortSha = github.context.sha.substr(0, 7);
+    const tagName = `${parsed.version}-${shortSha}`;
 
-  // const applicationName = github.context.payload.repository.name;
-  // const octoKit = github.getOctokit(GITHUB_TOKEN);
-  // const environment = core.getInput('environment');
-  // const herokuApplicationName = getHerokuApplicationName(environment);
-  // console.info(`Environment: ${environment}`);
-  // console.info(`Heroku Application Name: ${herokuApplicationName}`);
+    core.info(`Creating tag: ${tagName} for commit: ${github.context.sha}`);
+    const annotatedTag = await octokit.git.createTag({
+      ...github.context.repo,
+      tag: tagName,
+      message: tagName,
+      object: github.context.sha,
+      type: 'commit',
+    });
 
-  core.setOutput("release_tag", tagName);
-} catch (error) {
-  core.setFailed(error.message);
+    core.info(`AnnotatedTag tag sha: ${annotatedTag.data.sha}`);
+    await octokit.git.createRef({
+      ...github.context.repo,
+      ref: `refs/tags/${tagName}`,
+      sha: annotatedTag.data.sha
+    });
+
+    core.setOutput("release_tag", tagName);
+  } catch (error) {
+    core.setFailed(error.message);
+  }
 }
+
+run();
 
 
 })();

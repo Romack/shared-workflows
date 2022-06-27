@@ -20,6 +20,8 @@ jobs:
 
       - name: Create a Release Tag
         uses: romack/shared-workflows/.github/actions/create-github-tag@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Echo Heroku Application Name
         run: echo "Heroku Application Name ${{ steps.get-heroku-application-name.outputs.heroku_application_name }}"
