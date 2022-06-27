@@ -3,21 +3,21 @@ const github = require('@actions/github');
 const fs = require('fs');
 
 const run = async () => {
-  const githubToken = core.getInput('github-token');
-  const octokit = github.getOctokit(githubToken);
-
   const packageJson = fs.readFileSync('./package.json', 'utf-8');
   const parsed = JSON.parse(packageJson);
   const shortSha = github.context.sha.substr(0, 7);
   const tagName = `${parsed.version}-${shortSha}`;
+  const githubToken = core.getInput('github-token');
+  const octokit = github.getOctokit(githubToken);
 
   const existingReference = await octokit.rest.git.getRef({
     ...github.context.repo,
     ref: `tags/${tagName}`
-  }).catch(() => core.info(`Reference 'tags/${tagName}' does not exist`));
+  }).catch(() => core.info(`Tag ${tagName} does not exist`));
 
   if (existingReference) {
-    core.info(`Reference 'tags/${tagName}' already exists`)
+    core.info(`Tag ${tagName} already exists`);
+
   } else {
     core.info(`Creating tag: ${tagName}, commit: ${github.context.sha}`);
     const annotatedTag = await octokit.rest.git.createTag({
@@ -28,13 +28,13 @@ const run = async () => {
       type: 'commit',
     });
 
-    core.info(`Creating tag reference: ${annotatedTag.data.sha}`);
     await octokit.rest.git.createRef({
       ...github.context.repo,
       ref: `refs/tags/${tagName}`,
       sha: annotatedTag.data.sha
     });
   }
+
   core.setOutput('tag_name', tagName);
 }
 
