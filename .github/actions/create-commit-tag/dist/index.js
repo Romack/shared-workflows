@@ -8932,7 +8932,7 @@ const run = async () => {
 
   const existing1 = await octokit.rest.git.getTag({
     ...github.context.repo,
-    tag_sha: tagName
+    tag_sha: github.context.sha
   }).catch(error => `Tag does not exist: ${JSON.stringify(error)}`);;
   console.log(`Existing 1: ${JSON.stringify(existing1)}`);
 
