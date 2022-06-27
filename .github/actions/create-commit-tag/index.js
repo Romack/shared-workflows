@@ -19,7 +19,7 @@ const run = async () => {
 
   const existing2 = await octokit.rest.git.getRef({
     ...github.context.repo,
-    ref: `refs/tags/${tagName}`
+    ref: `tags/${tagName}`
   }).catch(error => `Reference does not exist: ${JSON.stringify(error)}`);
   console.log(`Existing 2: ${JSON.stringify(existing2)}`);
 
