@@ -8930,34 +8930,30 @@ const run = async () => {
   const shortSha = github.context.sha.substr(0, 7);
   const tagName = `${parsed.version}-${shortSha}`;
 
-  const existing1 = await octokit.rest.git.getTag({
-    ...github.context.repo,
-    tag_sha: github.context.sha
-  }).catch(error => `Tag does not exist: ${JSON.stringify(error)}`);;
-  console.log(`Existing 1: ${JSON.stringify(existing1)}`);
-
-  const existing2 = await octokit.rest.git.getRef({
+  const existingReference = await octokit.rest.git.getRef({
     ...github.context.repo,
     ref: `tags/${tagName}`
-  }).catch(error => `Reference does not exist: ${JSON.stringify(error)}`);
-  console.log(`Existing 2: ${JSON.stringify(existing2)}`);
+  }).catch(error => core.info(`Error: ${JSON.stringify(error)}`));
 
-  core.info(`Creating tag: ${tagName}, commit: ${github.context.sha}`);
-  const annotatedTag = await octokit.rest.git.createTag({
-    ...github.context.repo,
-    tag: tagName,
-    message: tagName,
-    object: github.context.sha,
-    type: 'commit',
-  });
+  if (existingReference) {
+    core.info(`Reference tags/${tagName} already exists`)
+  } else {
+    core.info(`Creating tag: ${tagName}, commit: ${github.context.sha}`);
+    const annotatedTag = await octokit.rest.git.createTag({
+      ...github.context.repo,
+      tag: tagName,
+      message: tagName,
+      object: github.context.sha,
+      type: 'commit',
+    });
 
-  core.info(`Creating tag reference: ${annotatedTag.data.sha}`);
-  await octokit.rest.git.createRef({
-    ...github.context.repo,
-    ref: `refs/tags/${tagName}`,
-    sha: annotatedTag.data.sha
-  });
-
+    core.info(`Creating tag reference: ${annotatedTag.data.sha}`);
+    await octokit.rest.git.createRef({
+      ...github.context.repo,
+      ref: `refs/tags/${tagName}`,
+      sha: annotatedTag.data.sha
+    });
+  }
   core.setOutput('tag_name', tagName);
 }
 
