@@ -8933,10 +8933,10 @@ const run = async () => {
   const existingReference = await octokit.rest.git.getRef({
     ...github.context.repo,
     ref: `tags/${tagName}`
-  }).catch(error => core.info(`Error: ${JSON.stringify(error)}`));
+  }).catch(() => core.info(`Reference 'tags/${tagName}' does not exist`));
 
   if (existingReference) {
-    core.info(`Reference tags/${tagName} already exists`)
+    core.info(`Reference 'tags/${tagName}' already exists`)
   } else {
     core.info(`Creating tag: ${tagName}, commit: ${github.context.sha}`);
     const annotatedTag = await octokit.rest.git.createTag({
