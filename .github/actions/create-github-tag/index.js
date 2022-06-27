@@ -12,14 +12,8 @@ const run = async () => {
   const shortSha = github.context.sha.substr(0, 7);
   const tagName = `${parsed.version}-${shortSha}`;
 
-  const newIssue = await octokit.rest.issues.create({
-    ...github.context.repo,
-    title: 'New issue!',
-    body: 'Hello Universe!'
-  });
-
   core.info(`Creating tag: ${tagName} for commit: ${github.context.sha}`);
-  const annotatedTag = await octokit.git.createTag({
+  const annotatedTag = await octokit.rest.git.createTag({
     ...github.context.repo,
     tag: tagName,
     message: tagName,
@@ -28,7 +22,7 @@ const run = async () => {
   });
 
   core.info(`AnnotatedTag tag sha: ${annotatedTag.data.sha}`);
-  await octokit.git.createRef({
+  await octokit.rest.git.createRef({
     ...github.context.repo,
     ref: `refs/tags/${tagName}`,
     sha: annotatedTag.data.sha
