@@ -11,11 +11,11 @@ const run = async () => {
   const shortSha = github.context.sha.substr(0, 7);
   const tagName = `${parsed.version}-${shortSha}`;
 
-  const existing1 = await octokit.rest.git.getTag({
-    ...github.context.repo,
-    tag_sha: tagName
-  });
-  console.log(`Existing 1: ${JSON.stringify(existing1)}`);
+  // const existing1 = await octokit.rest.git.getTag({
+  //   ...github.context.repo,
+  //   tag_sha: tagName
+  // });
+  // console.log(`Existing 1: ${JSON.stringify(existing1)}`);
 
   const existing2 = await octokit.rest.git.getRef({
     ...github.context.repo,
