@@ -1,8 +1,12 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-const run = async (application, environment, version) => {
+const run = async () => {
   const apiToken = core.getInput('api-token');
+  const application = core.getInput('application');
+  const environment = core.getInput('environment');
+  const version = core.getInput('github-token');
+
   // 2021-09-15T18:03:09.967342Z
   const timestamp = new Date().toISOString();
   core.info(`Recording deployment...`);
