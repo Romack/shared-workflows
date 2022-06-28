@@ -1,8 +1,18 @@
 name: 'Record deployment'
 description: 'Creates a deployment in the CI/CD database'
+# const run = async (application, environment, version) => {
 inputs:
   api-token:
     description: 'The token to use for interacting with the CI/CD Automation API'
+    required: true
+  application:
+    description: 'The application that was deployed'
+    required: true
+  environment:
+    description: 'The environment to which the application was deployed'
+    required: true
+  version:
+    description: 'The version of the application that was deployed'
     required: true
 runs:
   using: 'node16'
