@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+import axios from 'axios';
 
 const run = async () => {
   const apiToken = core.getInput('api-token');
@@ -16,19 +17,20 @@ const run = async () => {
   core.info(`Environment: ${environment}`);
   core.info(`Timestamp: ${timestamp}`);
 
-  await fetch(
-    "https://api-dev.invitationhomes.com/ci-cd/v1/deployments",
+  await axios.post(
+    'https://api-dev.invitationhomes.com/ci-cd/v1/deployments',
     {
-      method: "POST",
-      body: JSON.stringify({
-        application,
-        environment,
-        version,
-        commit: github.context.sha,
-        timestamp: new Date().toISOString(),
-        isSuccessful: 'true'
-      }),
-      headers: new Headers({ Authorization: `Bearer ${apiToken}` }),
+      application,
+      environment,
+      version,
+      commit: github.context.sha,
+      timestamp: new Date().toISOString(),
+      isSuccessful: 'true'
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${apiToken}`
+      }
     });
 }
 
