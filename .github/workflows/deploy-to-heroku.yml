@@ -28,7 +28,6 @@ jobs:
         uses: romack/shared-workflows/.github/actions/record-deployment@main
         with:
           api-token: ${{ secrets.CI_CD_API_TOKEN }}
-          application: ${{ steps.get-heroku-application-name.outputs.heroku_application_name }}
           environment: ${{ inputs.environment }}
           version: ${{ steps.create-commit-tag.outputs.tag_name }}
 

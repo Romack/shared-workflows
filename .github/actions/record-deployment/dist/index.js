@@ -13917,7 +13917,6 @@ const github = __nccwpck_require__(5438);
 
 const run = async () => {
   const apiToken = core.getInput('api-token');
-  const application = core.getInput('application');
   const environment = core.getInput('environment');
   const version = core.getInput('version');
 
@@ -13933,7 +13932,7 @@ const run = async () => {
   await axios__WEBPACK_IMPORTED_MODULE_0___default().post(
     'https://api-dev.invitationhomes.com/ci-cd/v1/deployments',
     {
-      application,
+      repository: github.context.payload.repository.name,
       environment,
       version,
       commit: github.context.sha,
@@ -13944,7 +13943,9 @@ const run = async () => {
       headers: {
         Authorization: `Bearer ${apiToken}`
       }
-    });
+    })
+    .then(response => core.info(`record-deployment() => status: ${response.status}`))
+    .catch(error => core.error(`record-deployment() => error: ${error.message}`));
 }
 
 run().catch(error => core.setFailed(error.message));

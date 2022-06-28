@@ -5,9 +5,6 @@ inputs:
   api-token:
     description: 'The token to use for interacting with the CI/CD Automation API'
     required: true
-  application:
-    description: 'The application that was deployed'
-    required: true
   environment:
     description: 'The environment to which the application was deployed'
     required: true
