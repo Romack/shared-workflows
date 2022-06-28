@@ -1,0 +1,9 @@
+name: 'Record deployment'
+description: 'Creates a deployment in the CI/CD database'
+inputs:
+  api-token:
+    description: 'The token to use for interacting with the CI/CD Automation API'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
