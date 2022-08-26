@@ -17,6 +17,7 @@ jobs:
         uses: romack/shared-workflows/.github/actions/create-commit-tag@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          include-build-metadata: true
 
       - name: Echo Non Prod Tag
         run: echo "Release Tag ${{ steps.create-non-prod-tag.outputs.tag_name }}"
