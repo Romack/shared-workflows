@@ -12,12 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create a Release Tag
-        id: create-non-prod-tag
-        uses: romack/shared-workflows/.github/actions/create-commit-tag@main
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create Non Prod Tag
         id: create-non-prod-tag
         uses: romack/shared-workflows/.github/actions/create-commit-tag@main
