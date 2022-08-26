@@ -8925,9 +8925,13 @@ const run = async () => {
   const packageJson = fs.readFileSync('./package.json', 'utf-8');
   const parsed = JSON.parse(packageJson);
   const shortSha = github.context.sha.substr(0, 7);
-  const tagName = `${parsed.version}-${github.context.runNumber}-${shortSha}`;
   const githubToken = core.getInput('github-token');
+  const includeBuildMetadata = core.getInput('include-build-metadata') || true;
+  const tagName = includeBuildMetadata
+    ? `${parsed.version}-${github.context.runNumber}-${shortSha}`
+    : parsed.version;
   const octokit = github.getOctokit(githubToken);
+  core.info(`includeBuildMetadata ? ${includeBuildMetadata}`);
 
   const existingReference = await octokit.rest.git.getRef({
     ...github.context.repo,
@@ -8939,19 +8943,19 @@ const run = async () => {
 
   } else {
     core.info(`Creating tag: ${tagName}, commit: ${github.context.sha}`);
-    const annotatedTag = await octokit.rest.git.createTag({
-      ...github.context.repo,
-      tag: tagName,
-      message: tagName,
-      object: github.context.sha,
-      type: 'commit',
-    });
-
-    await octokit.rest.git.createRef({
-      ...github.context.repo,
-      ref: `refs/tags/${tagName}`,
-      sha: annotatedTag.data.sha
-    });
+    // const annotatedTag = await octokit.rest.git.createTag({
+    //   ...github.context.repo,
+    //   tag: tagName,
+    //   message: tagName,
+    //   object: github.context.sha,
+    //   type: 'commit',
+    // });
+    //
+    // await octokit.rest.git.createRef({
+    //   ...github.context.repo,
+    //   ref: `refs/tags/${tagName}`,
+    //   sha: annotatedTag.data.sha
+    // });
   }
 
   core.setOutput('tag_name', tagName);
