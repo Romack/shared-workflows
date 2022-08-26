@@ -12,27 +12,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Get Heroku Application Name
-        id: get-heroku-application-name
-        uses: romack/shared-workflows/.github/actions/get-heroku-application-name@main
-        with:
-          environment: ${{ inputs.environment }}
-
-      - name: Create a Release Tag
-        id: create-commit-tag
+      - name: Create Non Prod Tag
+        id: create-non-prod-tag
         uses: romack/shared-workflows/.github/actions/create-commit-tag@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Record Deployment
-        uses: romack/shared-workflows/.github/actions/record-deployment@main
+      - name: Echo Non Prod Tag
+        run: echo "Release Tag ${{ steps.create-non-prod-tag.outputs.tag_name }}"
+
+      - name: Create Prod Tag
+        id: create-prod-tag
+        uses: romack/shared-workflows/.github/actions/create-commit-tag@main
         with:
-          api-token: ${{ secrets.CI_CD_API_TOKEN }}
-          environment: ${{ inputs.environment }}
-          version: ${{ steps.create-commit-tag.outputs.tag_name }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Echo Heroku Application Name
-        run: echo "Heroku Application Name ${{ steps.get-heroku-application-name.outputs.heroku_application_name }}"
-
-      - name: Echo Release Tag
-        run: echo "Release Tag ${{ steps.create-commit-tag.outputs.release_tag }}"
+      - name: Echo Prod Tag
+        run: echo "Release Tag ${{ steps.create-prod-tag.outputs.tag_name }}"
