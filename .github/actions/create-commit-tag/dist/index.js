@@ -8926,7 +8926,7 @@ const run = async () => {
   const parsed = JSON.parse(packageJson);
   const shortSha = github.context.sha.substr(0, 7);
   const githubToken = core.getInput('github-token');
-  const includeBuildMetadata = core.getInput('include-build-metadata') || true;
+  const includeBuildMetadata = core.getInput('include-build-metadata') || false;
   const tagName = includeBuildMetadata
     ? `${parsed.version}-${github.context.runNumber}-${shortSha}`
     : parsed.version;
