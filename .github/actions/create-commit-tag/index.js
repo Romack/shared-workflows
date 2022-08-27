@@ -7,7 +7,12 @@ const run = async () => {
   const parsed = JSON.parse(packageJson);
   const shortSha = github.context.sha.substr(0, 7);
   const githubToken = core.getInput('github-token');
-  const includeBuildMetadata = core.getInput('include-build-metadata') || false;
+  const includeBuildMetadata = core.getInput('include-build-metadata');
+  console.log(`includeBuildMetadata === true ? ${includeBuildMetadata === true}`);
+  console.log(`includeBuildMetadata === 'true' ? ${includeBuildMetadata === 'true'}`);
+  console.log(`includeBuildMetadata === false ? ${includeBuildMetadata === false}`);
+  console.log(`includeBuildMetadata === 'false' ? ${includeBuildMetadata === 'false'}`);
+
   const tagName = includeBuildMetadata
     ? `${parsed.version}-${github.context.runNumber}-${shortSha}`
     : parsed.version;

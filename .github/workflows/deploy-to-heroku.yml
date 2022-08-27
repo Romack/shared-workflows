@@ -12,35 +12,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo '${{ toJSON(github) }}'
-      - name: Dump job context
-        run: echo '${{ toJSON(job) }}'
-      - name: Dump steps context
-        run: echo '${{ toJSON(steps) }}'
-      - name: Dump runner context
-        run: echo '${{ toJSON(runner) }}'
-      - name: Dump strategy context
-        run: echo '${{ toJSON(strategy) }}'
-      - name: Dump matrix context
-        run: echo '${{ toJSON(matrix) }}'
-
-      - name: Create Non Prod Tag
-        id: create-non-prod-tag
+      - name: Include Metadata == true
         uses: romack/shared-workflows/.github/actions/create-commit-tag@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           include-build-metadata: true
 
-      - name: Echo Non Prod Tag
-        run: echo "Release Tag ${{ steps.create-non-prod-tag.outputs.tag_name }}"
-
-      - name: Create Prod Tag
-        id: create-prod-tag
+      - name: Include Metadata == 'true'
         uses: romack/shared-workflows/.github/actions/create-commit-tag@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          include-build-metadata: 'true'
 
-      - name: Echo Prod Tag
-        run: echo "Release Tag ${{ steps.create-prod-tag.outputs.tag_name }}"
+      - name: Include Metadata == false
+        uses: romack/shared-workflows/.github/actions/create-commit-tag@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          include-build-metadata: false
+
+      - name: Include Metadata == 'false'
+        uses: romack/shared-workflows/.github/actions/create-commit-tag@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          include-build-metadata: 'false'
+
+      - name: Include Metadata undefined
+        uses: romack/shared-workflows/.github/actions/create-commit-tag@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

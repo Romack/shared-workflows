@@ -4,6 +4,10 @@ inputs:
   github-token:
     description: 'The token to use for interacting with GitHub '
     required: true
+  include-build-metadata:
+    description: 'Whether to include build metadata in the generated tag (e.g. <build_number>-<short_sha>)'
+    required: false
+    default: 'false'
 outputs:
   tag_name:
     description: 'The name of the tag that was created'
